@@ -1,0 +1,23 @@
+name: PIZ-CLI CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Clone the repository into the GitHub runner.
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      # Install the stable Rust toolchain.
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      # Compile the project in debug mode.
+      - name: Build project
+        run: cargo build --verbose

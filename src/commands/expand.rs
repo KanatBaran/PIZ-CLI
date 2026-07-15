@@ -1,9 +1,9 @@
 /* Imports */
-use std::path::{Path, PathBuf};
-use crate::cli::ExpandArgs;                                // cli.rs
-use crate::core::validator::{validate_inputs, parse_size}; // core/validator.rs
-use crate::core::output::generate_output_path;             // core/output.rs
-use crate::core::expand::expand_file;                      // core/expand.rs
+use crate::cli::ExpandArgs; // cli.rs
+use crate::core::expand::expand_file;
+use crate::core::output::generate_output_path; // core/output.rs
+use crate::core::validator::{parse_size, validate_inputs}; // core/validator.rs
+use std::path::{Path, PathBuf}; // core/expand.rs
 /* ./Imports */
 
 /* Functions */

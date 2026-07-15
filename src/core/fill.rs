@@ -32,7 +32,9 @@ pub struct RandomGenerator {
 impl RandomGenerator {
     pub fn new() -> Self {
         // seed
-        Self { state: 88172645463325252 }
+        Self {
+            state: 88172645463325252,
+        }
     }
 }
 

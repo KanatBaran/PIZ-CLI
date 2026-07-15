@@ -13,10 +13,16 @@ jobs:
       # Clone the repository into the GitHub runner.
       - name: Checkout repository
         uses: actions/checkout@v4
-        
+
       # Install the stable Rust toolchain.
       - name: Install Rust
         uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt
+
+      # Check code formatting.
+      - name: Check formatting
+        run: cargo fmt --all -- --check
 
       # Compile the project in debug mode.
       - name: Build project

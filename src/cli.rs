@@ -1,5 +1,5 @@
 /* Imports */
-use clap::{Parser, Subcommand, Args};
+use clap::{Args, Parser, Subcommand};
 /* ./Imports */
 
 /* CLI */
@@ -46,7 +46,7 @@ pub struct ExpandArgs {
 /* Functions */
 pub fn run() {
     let cli = Cli::parse();
-    
+
     if let Err(e) = crate::commands::handle_command(cli.command) {
         eprintln!("Error: {}", e);
         std::process::exit(1);

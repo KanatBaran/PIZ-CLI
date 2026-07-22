@@ -10,7 +10,9 @@ Technology becomes truly meaningful when it impacts human lives. At PIZ, we want
 The PIZ movement thrives on the power of its community. You can contribute to the PIZ-CLI project by improving the code, enhancing the documentation, or simply spreading the word. Every contribution helps push forward not just a single tool, but a movement that bridges technology and empathy.
 
 # PIZ-CLI
-PIZ CLI is an open-source command-line tool that expands files to a specified size. Instead of compressing data, PIZ makes files larger by appending either the digits of π (Pi) or random data. *PIZ-CLI is the debut project of the PIZ movement, intentionally designed with an unconventional functionality to spark curiosity and draw attention to social good.*
+PIZ CLI is an open-source command-line tool that expands files to a specified size. Instead of compressing data, PIZ makes files larger by appending either the digits of π (Pi)* or random data. *PIZ-CLI is the debut project of the PIZ movement, intentionally designed with an unconventional functionality to spark curiosity and draw attention to social good.*
+
+*\*Note: Rather than computing infinite digits of Pi, we use the first 101 digits of Pi as a seed with the BLAKE3 cryptographic hash function (XOF) to deterministically generate a stream of bytes.*
 
 ## Usage
 

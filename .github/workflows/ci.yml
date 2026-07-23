@@ -27,3 +27,7 @@ jobs:
       # Compile the project in debug mode.
       - name: Build project
         run: cargo build --verbose
+
+      # Run tests.
+      - name: Run tests
+        run: cargo test --verbose

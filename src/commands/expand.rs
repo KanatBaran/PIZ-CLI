@@ -53,8 +53,6 @@ pub fn exec(args: ExpandArgs) -> Result<(), String> {
     )?;
 
     println!("\nProcess completed successfully!");
-    println!("\nTechnology is more meaningful when it helps people.");
-    println!("If you'd like to make a difference, visit https://piz.world");
     Ok(())
 }
 /* ./Functions */

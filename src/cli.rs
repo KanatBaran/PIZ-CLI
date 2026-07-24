@@ -7,8 +7,8 @@ use clap::{Args, Parser, Subcommand};
 #[command(
     name = "PIZ",
     version,
-    about = "The world's first CLI with an expansion algorithm, built to promote social responsibility.",
-    long_about = "PIZ is, at its core, a social responsibility project. It aims to attract attention by becoming the world's first CLI powered by an expansion algorithm, encouraging people to raise awareness of social responsibility initiatives and charitable organizations."
+    about = "The world's first CLI with an expansion algorithm.",
+    long_about = "PIZ is a CLI tool powered by an expansion algorithm that expands files to a specified size by appending digits of Pi or random data."
 )]
 
 pub struct Cli {

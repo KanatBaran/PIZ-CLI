@@ -1,5 +1,6 @@
 /* Imports */
 use crate::core::fill::{PiGenerator, RandomGenerator};
+use crate::error::{Error, Result};
 use std::fs::File;
 use std::io::{self, BufReader, BufWriter, Write};
 use std::path::Path;
@@ -11,12 +12,10 @@ pub fn expand_file(
     output_path: &Path, // extended path
     bytes_to_add: u64,  // amount of bytes to be added
     fill_method: &str,  // random or pi
-) -> Result<(), String> {
+) -> Result<()> {
     // Open input and create output files
-    let input_file = File::open(input_path)
-        .map_err(|e| format!("Error! The source file could not be opened: {}", e))?;
-    let output_file = File::create(output_path)
-        .map_err(|e| format!("Error! The output file could not be generated: {}", e))?;
+    let input_file = File::open(input_path).map_err(Error::OpenSource)?;
+    let output_file = File::create(output_path).map_err(Error::CreateOutput)?;
 
     // create buffered reader and writer
     let mut reader = BufReader::new(input_file);
@@ -25,17 +24,14 @@ pub fn expand_file(
     let chunk_size = 65536; // 64 KB Buffer Size
     let mut remaining = bytes_to_add;
 
-    io::copy(&mut reader, &mut writer)
-        .map_err(|e| format!("Error! The file could not be copied: {}", e))?;
+    io::copy(&mut reader, &mut writer).map_err(Error::CopyFile)?;
 
     if fill_method == "random" {
         let mut generator = RandomGenerator::new();
         while remaining > 0 {
             let write_len = std::cmp::min(remaining, chunk_size as u64) as usize;
             let buffer: Vec<u8> = (&mut generator).take(write_len).collect();
-            writer
-                .write_all(&buffer)
-                .map_err(|e| format!("Error! The file could not be expanded: {}", e))?;
+            writer.write_all(&buffer).map_err(Error::ExpandFile)?;
             remaining -= write_len as u64;
         }
     } else {
@@ -43,16 +39,12 @@ pub fn expand_file(
         while remaining > 0 {
             let write_len = std::cmp::min(remaining, chunk_size as u64) as usize;
             let buffer: Vec<u8> = (&mut generator).take(write_len).collect();
-            writer
-                .write_all(&buffer)
-                .map_err(|e| format!("Error! The file could not be expanded: {}", e))?;
+            writer.write_all(&buffer).map_err(Error::ExpandFile)?;
             remaining -= write_len as u64;
         }
     }
 
-    writer
-        .flush()
-        .map_err(|e| format!("Error! The file write buffer could not be cleared: {}", e))?;
+    writer.flush().map_err(Error::Flush)?;
     Ok(())
 }
 /* ./Functions */
@@ -189,12 +181,7 @@ mod tests {
         let output_path = temp_dir.join("non_existent_output_file_123.txt");
 
         let result = expand_file(&input_path, &output_path, 10, "random");
-        assert!(result.is_err());
-        assert!(
-            result
-                .unwrap_err()
-                .contains("source file could not be opened")
-        );
+        assert!(matches!(result, Err(Error::OpenSource(_))));
     }
 }
 /* ./Unit Tests */

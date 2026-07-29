@@ -1,10 +1,11 @@
 /* Imports */
+use crate::error::{Error, Result};
 use std::path::Path;
 /* ./Imports */
 
 /* Functions */
 // Converts size expressions to bytes.
-pub fn parse_size(size_str: &str) -> Result<u64, String> {
+pub fn parse_size(size_str: &str) -> Result<u64> {
     let clean_str = size_str.trim().to_uppercase();
 
     let num_part: String = clean_str
@@ -18,12 +19,12 @@ pub fn parse_size(size_str: &str) -> Result<u64, String> {
         .collect();
 
     if num_part.is_empty() {
-        return Err(format!("Error! Invalid size format: {}", size_str));
+        return Err(Error::InvalidSizeFormat(size_str.to_string()));
     }
 
     let value: f64 = num_part
-        .parse()
-        .map_err(|e| format!("Erorr! The number could not be deciphered: {}", e))?;
+        .parse::<f64>()
+        .map_err(|e| Error::InvalidNumber(e.to_string()))?;
 
     let multiplier: u64 = match unit_part.as_str() {
         "B" | "" => 1,
@@ -31,24 +32,20 @@ pub fn parse_size(size_str: &str) -> Result<u64, String> {
         "MB" | "M" => 1024 * 1024,
         "GB" | "G" => 1024 * 1024 * 1024,
         "TB" | "T" => 1024 * 1024 * 1024 * 1024,
-        _ => return Err(format!("Error! Invalid Format: {}", unit_part)),
+        _ => return Err(Error::InvalidSizeUnit(unit_part)),
     };
 
     Ok((value * multiplier as f64) as u64)
 }
 
 // Verifies parameters given via CLI.
-pub fn validate_inputs(
-    file_path: &str,
-    add: &Option<String>,
-    size: &Option<String>,
-) -> Result<(), String> {
+pub fn validate_inputs(file_path: &str, add: &Option<String>, size: &Option<String>) -> Result<()> {
     if !Path::new(file_path).exists() {
-        return Err(format!("Error! File isn't found: {}", file_path));
+        return Err(Error::FileNotFound(file_path.to_string()));
     }
 
     if add.is_none() && size.is_none() {
-        return Err("Error! Please specify either the '--add' or '--size' parameter:".to_string());
+        return Err(Error::MissingSizeFlag);
     }
 
     Ok(())
@@ -184,8 +181,7 @@ mod tests {
             &None,
         );
 
-        assert!(result.is_err());
-        assert!(result.unwrap_err().contains("File isn't found"));
+        assert!(matches!(result, Err(Error::FileNotFound(_))));
     }
 
     // Verifies that validation fails when neither '--add' nor '--size' is provided.
@@ -194,12 +190,7 @@ mod tests {
         let (file_path, cleanup) = create_temp_file();
 
         let result = validate_inputs(&file_path, &None, &None);
-        assert!(result.is_err());
-        assert!(
-            result
-                .unwrap_err()
-                .contains("Please specify either the '--add' or '--size' parameter")
-        );
+        assert!(matches!(result, Err(Error::MissingSizeFlag)));
 
         cleanup();
     }

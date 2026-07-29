@@ -3,11 +3,12 @@ use crate::cli::ExpandArgs; // cli.rs
 use crate::core::expand::expand_file;
 use crate::core::output::generate_output_path; // core/output.rs
 use crate::core::validator::{parse_size, validate_inputs}; // core/validator.rs
+use crate::error::{Error, Result};
 use std::path::{Path, PathBuf}; // core/expand.rs
 /* ./Imports */
 
 /* Functions */
-pub fn exec(args: ExpandArgs) -> Result<(), String> {
+pub fn exec(args: ExpandArgs) -> Result<()> {
     // Check the rules.
     validate_inputs(&args.file, &args.add, &args.size)?;
 
@@ -19,7 +20,7 @@ pub fn exec(args: ExpandArgs) -> Result<(), String> {
 
     // Get the present file size.
     let current_size = std::fs::metadata(&args.file)
-        .map_err(|e| format!("Error! The file info couldn't be read: {}", e))?
+        .map_err(Error::Metadata)?
         .len();
 
     // Calculate the amount of bytes to be added.
@@ -28,10 +29,10 @@ pub fn exec(args: ExpandArgs) -> Result<(), String> {
     } else if let Some(size_str) = &args.size {
         let target_size = parse_size(size_str)?;
         if target_size < current_size {
-            return Err(format!(
-                "The target size ({}) cannot be smaller than the current file size ({}).",
-                target_size, current_size
-            ));
+            return Err(Error::TargetSizeTooSmall {
+                target: target_size,
+                current: current_size,
+            });
         }
         target_size - current_size
     } else {

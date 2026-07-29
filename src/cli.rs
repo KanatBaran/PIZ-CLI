@@ -44,12 +44,15 @@ pub struct ExpandArgs {
 /* ./Command */
 
 /* Functions */
-pub fn run() {
+pub fn run() -> std::process::ExitCode {
     let cli = Cli::parse();
 
-    if let Err(e) = crate::commands::handle_command(cli.command) {
-        eprintln!("Error: {}", e);
-        std::process::exit(1);
+    match crate::commands::handle_command(cli.command) {
+        Ok(()) => std::process::ExitCode::SUCCESS,
+        Err(e) => {
+            eprintln!("error: {e}");
+            std::process::ExitCode::FAILURE
+        }
     }
 }
 /* ./Functions */

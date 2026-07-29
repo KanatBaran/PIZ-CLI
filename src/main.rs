@@ -5,7 +5,6 @@ mod core;
 mod error;
 /* ./Modules */
 
-// Run main
-fn main() {
-    cli::run();
+fn main() -> std::process::ExitCode {
+    cli::run()
 }

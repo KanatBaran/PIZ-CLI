@@ -77,10 +77,14 @@ fn test_txt_compatibility_expansion() {
         "Readable TXT content changed after expansion!"
     );
 
-    // Verify that appended fill data is ASCII digits only ('0'..='9').
+    // Appended data starts with two newlines, then ASCII digits only ('0'..='9').
     let appended = &expanded_content[original_content.len()..];
     assert!(
-        appended.iter().all(|&b| (b'0'..=b'9').contains(&b)),
+        appended.starts_with(b"\n\n"),
+        "TXT fill should start with two newlines"
+    );
+    assert!(
+        appended[2..].iter().all(|&b| (b'0'..=b'9').contains(&b)),
         "Appended TXT fill contained a non-digit byte"
     );
 

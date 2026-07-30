@@ -26,6 +26,12 @@ pub fn expand_file(
 
     io::copy(&mut reader, &mut writer).map_err(Error::CopyFile)?;
 
+    // If enough space, write two newlines to separate the original content from the generated fill data.
+    if remaining >= 2 {
+        writer.write_all(b"\n\n").map_err(Error::ExpandFile)?;
+        remaining -= 2;
+    }
+
     if fill_method == "random" {
         let mut generator = RandomGenerator::new();
         while remaining > 0 {

@@ -1,0 +1,4 @@
+PIZ sample text file.
+
+This fixture is used by the TXT compatibility integration test.
+The original content must remain readable after expansion.

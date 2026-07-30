@@ -43,7 +43,7 @@ impl Iterator for PiGenerator {
         // Returns the next data in the buffer.
         let byte = self.buffer[self.index];
         self.index += 1;
-        Some(byte)
+        Some(b'0' + (byte % 10)) // Instead of all ASCII characters, only numbers are used.
     }
 }
 /* ./Pi */
@@ -69,7 +69,7 @@ impl Iterator for RandomGenerator {
         self.state ^= self.state << 13;
         self.state ^= self.state >> 7;
         self.state ^= self.state << 17;
-        Some((self.state & 0xFF) as u8)
+        Some(b'0' + ((self.state & 0xFF) as u8 % 10)) // Instead of all ASCII characters, only numbers are used.
     }
 }
 /* ./Random */
@@ -109,6 +109,18 @@ mod tests {
         assert_eq!(seq1, seq2);
     }
 
+    // Verifies that PiGenerator only yields ASCII digit bytes ('0'..='9').
+    #[test]
+    fn test_pi_generator_digits_only() {
+        let mut generator = PiGenerator::new();
+        let seq: Vec<u8> = (&mut generator).take(10_000).collect();
+
+        assert!(
+            seq.iter().all(|&b| (b'0'..=b'9').contains(&b)),
+            "PiGenerator produced a non-digit byte"
+        );
+    }
+
     // --------------------
     // RandomGenerator
     // --------------------
@@ -137,6 +149,18 @@ mod tests {
         assert!(
             !all_same,
             "RandomGenerator produced a constant sequence of bytes"
+        );
+    }
+
+    // Verifies that RandomGenerator only yields ASCII digit bytes ('0'..='9').
+    #[test]
+    fn test_random_generator_digits_only() {
+        let mut generator = RandomGenerator::new();
+        let seq: Vec<u8> = (&mut generator).take(10_000).collect();
+
+        assert!(
+            seq.iter().all(|&b| (b'0'..=b'9').contains(&b)),
+            "RandomGenerator produced a non-digit byte"
         );
     }
 }

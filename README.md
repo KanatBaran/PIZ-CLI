@@ -1,7 +1,7 @@
 # PIZ-CLI
-PIZ CLI is an open-source command-line tool that expands files to a specified size. Instead of compressing data, PIZ makes files larger by appending either the digits of π (Pi)* or random data.
+PIZ CLI is an open-source command-line tool that expands files to a specified size. Instead of compressing data, PIZ makes files larger by appending either the digits of π (Pi)* or random digits (`0–9`).
 
-*\*Note: Rather than computing infinite digits of Pi, we use the first 101 digits of Pi as a seed with the BLAKE3 cryptographic hash function (XOF) to deterministically generate a stream of bytes.*
+*\*Note: Rather than computing infinite digits of Pi, we use the first 101 digits of Pi as a seed with the BLAKE3 cryptographic hash function (XOF) to deterministically generate a stream of ASCII digit bytes (`0–9`).*
 
 ## Usage
 
@@ -25,7 +25,7 @@ piz expand <file> [options]
 # Add 1 GB of Pi digits (default) to photo.jpg
 piz expand photo.jpg --add 1GB
 
-# Add 500 MB of random data
+# Add 500 MB of random digits
 piz expand photo.jpg --add 500MB --fill random
 
 # Expand photo.jpg to a target size of 2 GB

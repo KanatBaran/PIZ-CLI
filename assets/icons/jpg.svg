@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <path fill="#E8A317" d="M6 2h14l8 8v20a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z"/>
+  <path fill="#C4840A" d="M20 2l8 8h-6a2 2 0 0 1-2-2V2z"/>
+  <rect x="5" y="18" width="22" height="10" rx="1.5" fill="#1a1a1a"/>
+  <text x="16" y="26" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="7.5" font-weight="700" fill="#E8A317">JPG</text>
+</svg>

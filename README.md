@@ -3,6 +3,26 @@ PIZ CLI is an open-source command-line tool that expands files to a specified si
 
 *\*Note: Rather than computing infinite digits of Pi, we use the first 101 digits of Pi as a seed with the BLAKE3 cryptographic hash function (XOF) to deterministically generate a stream of ASCII digit bytes (`0–9`).*
 
+## Supported File Extensions
+
+PIZ appends data to the end of a file. These formats typically remain usable after expansion:
+
+<p>
+  <img src="assets/icons/jpg.svg" alt="JPG" width="64" height="64">
+  <img src="assets/icons/png.svg" alt="PNG" width="64" height="64">
+  <img src="assets/icons/txt.svg" alt="TXT" width="64" height="64">
+</p>
+
+### Never Supported
+
+<p>
+  <img src="assets/icons/rar.svg" alt="RAR" width="64" height="64">
+</p>
+
+RAR has been good to us. Even after the trial ends, WinRAR lets users keep using it with little more than a friendly reminder. PIZ returns the favor by leaving RAR files alone.
+
+We respect RAR.
+
 ## Usage
 
 ```bash

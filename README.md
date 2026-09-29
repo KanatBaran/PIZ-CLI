@@ -11,6 +11,7 @@ PIZ appends data to the end of a file. These formats typically remain usable aft
   <img src="assets/icons/jpg.svg" alt="JPG" width="64" height="64">
   <img src="assets/icons/png.svg" alt="PNG" width="64" height="64">
   <img src="assets/icons/txt.svg" alt="TXT" width="64" height="64">
+  <img src="assets/icons/exe.svg" alt="EXE" width="64" height="64">
 </p>
 
 ### Never Supported
@@ -18,8 +19,6 @@ PIZ appends data to the end of a file. These formats typically remain usable aft
 <p>
   <img src="assets/icons/rar.svg" alt="RAR" width="64" height="64">
 </p>
-
-RAR has been good to us. Even after the trial ends, WinRAR lets users keep using it with little more than a friendly reminder. PIZ returns the favor by leaving RAR files alone.
 
 We respect RAR.
 

@@ -10,7 +10,6 @@ use clap::{Args, Parser, Subcommand};
     about = "The world's first CLI with an expansion algorithm.",
     long_about = "PIZ is a CLI tool powered by an expansion algorithm that expands files to a specified size by appending digits of Pi or random data."
 )]
-
 pub struct Cli {
     #[command(subcommand)]
     pub command: Commands,

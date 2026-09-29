@@ -41,7 +41,7 @@ pub fn generate_output_path(input_path: &str) -> PathBuf {
     };
 
     // result
-    return parent.join(new_filename);
+    parent.join(new_filename)
 }
 /* ./Functions */
 

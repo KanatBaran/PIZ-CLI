@@ -66,17 +66,20 @@ fn test_exe_compatibility_expansion() {
         "Original EXE binary content changed after expansion!"
     );
 
-    // Execute the expanded executable file to verify it still runs properly without crashing.
-    let run_status = Command::new(output_file)
-        .arg("--test")
-        .status()
-        .expect("Expanded EXE file could not be executed");
+    // Execute the expanded executable file on Windows to verify it still runs properly without crashing.
+    #[cfg(target_os = "windows")]
+    {
+        let run_status = Command::new(output_file)
+            .arg("--test")
+            .status()
+            .expect("Expanded EXE file could not be executed");
 
-    assert!(
-        run_status.success(),
-        "Expanded EXE failed during execution: {:?}",
-        run_status
-    );
+        assert!(
+            run_status.success(),
+            "Expanded EXE failed during execution: {:?}",
+            run_status
+        );
+    }
 
     // Clean up the output file created during test.
     fs::remove_file(output_path).expect("Could not delete test output file");

@@ -10,6 +10,7 @@ PIZ appends data to the end of a file. These formats typically remain usable aft
   <img src="assets/icons/png.svg" alt="PNG" width="64" height="64">
   <img src="assets/icons/txt.svg" alt="TXT" width="64" height="64">
   <img src="assets/icons/exe.svg" alt="EXE" width="64" height="64">
+  <img src="assets/icons/pdf.svg" alt="PDF" width="64" height="64">
 </p>
 
 ### Never Supported

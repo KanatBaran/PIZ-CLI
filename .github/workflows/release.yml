@@ -1,0 +1,73 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            asset_name: piz.exe
+            binary_path: target/release/piz.exe
+            archive: false
+          - os: ubuntu-latest
+            asset_name: piz-linux-x86_64.tar.gz
+            binary_path: target/release/piz
+            archive: true
+          - os: macos-latest
+            asset_name: piz-macos-arm64.tar.gz
+            binary_path: target/release/piz
+            archive: true
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Build release binary
+        run: cargo build --release
+
+      - name: Prepare Windows binary
+        if: matrix.archive == false
+        shell: pwsh
+        run: Copy-Item ${{ matrix.binary_path }} ${{ matrix.asset_name }}
+
+      - name: Package Unix binary
+        if: matrix.archive == true
+        shell: bash
+        run: tar -czf ${{ matrix.asset_name }} -C target/release piz
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.asset_name }}
+          path: ${{ matrix.asset_name }}
+
+  release:
+    name: Create GitHub Release
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+          merge-multiple: true
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
+          files: artifacts/*
